@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% set hide_nav = true %}
+{% set hide_footer = true %}
+{% set full_width = true %}
+
+{% block content %}
+<div class="reg-page-split">
+    <!-- Visual Side (Left) -->
+    <!-- Visual Side (Left) -->
+    <div class="reg-visual" style="justify-content: flex-start; padding-top: 40px; background-color: #E9EFF6;">
+        <div class="reg-visual-content">
+            <!-- Banner (Top) -->
+            {% if event.banner_filename %}
+            <div style="width: 100%; margin-bottom: 30px;">
+                <img src="{{ url_for('main.serve_upload', filename=event.banner_filename) }}" alt="Event Banner"
+                    style="width: 100%; height: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            </div>
+            {% endif %}
+
+            <h1 class="reg-heading-large">{{ event.title }}</h1>
+            <p class="reg-desc-text">{{ event.description }}</p>
+
+            <div class="event-details-cards">
+                <!-- Date Card -->
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-text">
+                        <h4>Date</h4>
+                        <p>{{ event.date_time.strftime('%A, %d %B %Y') }}</p>
+                    </div>
+                </div>
+
+                <!-- Time Card -->
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-text">
+                        <h4>Time</h4>
+                        <p>{{ event.date_time.strftime('%I:%M %p') }} Onward</p>
+                    </div>
+                </div>
+
+                <!-- Venue Card -->
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="card-text">
+                        <h4>Venue</h4>
+                        <p>{{ event.location_text }}</p>
+                    </div>
+                </div>
+
+                <!-- Location Card -->
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="card-text">
+                        <h4>Location</h4>
+                        <p><a href="{{ event.location_url }}" target="_blank"
+                                style="color: inherit; text-decoration: underline;">Click here to go to location</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Side (Right) -->
+    <div class="reg-form-container">
+        <!-- Revert to original generic header -->
+        <!-- Revert to original generic header -->
+        <h2 style="margin-bottom: 10px;">Registration Form</h2>
+
+        <p style="color: #666; margin-top: 0; margin-bottom: 30px; font-size: 0.85rem;">Fill out the information below,
+            then click
+            Register Now to complete registration.</p>
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Full Name*</label>
+                <input type="text" name="full_name" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label>Organization Name*</label>
+                <input type="text" name="organization" required placeholder="Company Name">
+            </div>
+
+            <div class="form-group">
+                <label>Job Title*</label>
+                <input type="text" name="designation" required placeholder="e.g. Director of Operations">
+            </div>
+
+            <div class="form-group">
+                <label>Company Email Address*</label>
+                <input type="email" name="email" id="emailInput" required placeholder="name@company.com"
+                    oninput="validateEmail()">
+                <small id="emailError" style="color: red; display: none; margin-top: 5px;">Please use a work email
+                    address (no gmail, yahoo, etc).</small>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Email Address*</label>
+                <input type="email" name="confirm_email" id="confirmEmailInput" required placeholder="name@company.com"
+                    oninput="validateEmailMatch()" onpaste="return false;" ondrop="return false;" autocomplete="off">
+                <small id="emailMatchError" style="color: red; display: none; margin-top: 5px;">Email addresses do not
+                    match.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="text" name="phone" placeholder="+974 XXXX XXXX">
+            </div>
+
+            <div class="form-group" style="margin-top: 30px;">
+                <label
+                    style="font-weight: normal; text-transform: none; display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" required style="width: auto; margin-top: 4px;">
+                    <span style="font-size: 0.85rem; color: #666; line-height: 1.4;">
+                        By submitting this form, you acknowledge that this is a personal, non-transferable invitation.
+                        Registration does not guarantee attendance until confirmed by the organizer.
+                    </span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 20px; padding: 15px;">Register
+                Now</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validateEmail() {
+        const email = document.getElementById('emailInput').value.toLowerCase();
+        const error = document.getElementById('emailError');
+        const publicDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'live.com', 'icloud.com'];
+
+        const domain = email.split('@')[1];
+        if (domain && publicDomains.includes(domain)) {
+            error.style.display = 'block';
+            document.getElementById('emailInput').setCustomValidity('Please use a work email.');
+        } else {
+            error.style.display = 'none';
+            document.getElementById('emailInput').setCustomValidity('');
+        }
+        validateEmailMatch(); // Re-validate match when main email changes
+    }
+
+    function validateEmailMatch() {
+        const email = document.getElementById('emailInput').value;
+        const confirmEmail = document.getElementById('confirmEmailInput').value;
+        const matchError = document.getElementById('emailMatchError');
+
+        // Only validate if confirm email field has content
+        if (confirmEmail.length > 0) {
+            if (email !== confirmEmail) {
+                matchError.style.display = 'block';
+                document.getElementById('confirmEmailInput').setCustomValidity('Email addresses do not match.');
+            } else {
+                matchError.style.display = 'none';
+                document.getElementById('confirmEmailInput').setCustomValidity('');
+            }
+        }
+    }
+</script>
+
+<div class="partners-footer">
+    <!-- Resized header for footer as requested -->
+    <h3 style="font-size: 1.1rem; font-weight: 500;">In Collaboration With Our Technology Partners</h3>
+    <p style="font-size: 0.9rem;">This gathering is supported by a select group of trusted technology partners driving
+        innovation across the
+        region.</p>
+
+    <div class="partners-img-container">
+        {% if event.bottom_banner_filename %}
+        <!-- Custom Footer Banner -->
+        <img src="{{ url_for('main.serve_upload', filename=event.bottom_banner_filename) }}" alt="Technology Partners">
+        {% else %}
+        <!-- Default Footer Banner -->
+        <img src="{{ url_for('static', filename='uploads/partners_bg.png') }}" alt="Technology Partners">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

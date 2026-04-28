@@ -1,0 +1,8 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+<!-- This template renders a list of paragraphs passed from Python -->
+{% for paragraph in message_paragraphs %}
+<p>{{ paragraph | safe }}</p>
+{% endfor %}
+{% endblock %}

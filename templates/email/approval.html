@@ -1,0 +1,25 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+<p>We are pleased to inform you that your registration for the <strong>{{ event_title }}</strong> has been
+    <strong>successfully approved</strong>.</p>
+<p>Your seat is now <strong>confirmed</strong>.</p>
+<p>Please find your <strong>digital QR Code entry pass</strong> attached / included below.</p>
+
+<div style="text-align: center; margin: 30px 0;">
+    <!-- The src will be 'cid:qr_code' when sent via email, or a placeholder if viewed in browser -->
+    <img src="cid:qr_code" alt="QR Code"
+        style="width: 200px; height: 200px; border: 1px solid #ddd; padding: 10px; background-color: white;">
+    <p><small>(If image doesn't load, <a href="{{ qr_code_url }}">click here to view QR code</a>)</small></p>
+</div>
+
+<p>Kindly <strong>save this QR code on your mobile device</strong> and present it at the entrance on the event day, as
+    it will serve as your <strong>official entry pass</strong>.</p>
+
+<p>Please note that this QR code is <strong>valid for one-time use only</strong> and is <strong>personal and
+        non-transferable</strong>. We kindly ask that it is <strong>not shared</strong> to ensure a smooth and secure
+    entry experience for all guests.</p>
+
+<p>For a smooth check-in experience, we recommend arriving on time and keeping your QR code readily available.</p>
+<p>We look forward to welcoming you.</p>
+{% endblock %}

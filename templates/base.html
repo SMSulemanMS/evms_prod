@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EVMS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    {% if is_admin_page %}
+    <!-- Admin Layout with Sidebar -->
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='qds_logo.png') }}" alt="QDS Logo"
+                    style="height: 60px; width: auto;">
+            </div>
+            <nav class="nav-links">
+                <a href="{{ url_for('main.admin_dashboard') }}" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="{{ url_for('main.create_event') }}"><i class="fas fa-plus"></i> New Event</a>
+                <a href="#"><i class="fas fa-users"></i> Staff</a>
+                <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+                <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="{{ url_for('main.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {% block admin_content %}{% endblock %}
+        </main>
+    </div>
+
+    {% else %}
+    <!-- Public Layout -->
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages container">
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% endif %}
+
+    {% if not hide_footer %}
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-column footer-logo-section">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='uploads/QDS W.png') }}" alt="QDS Logo"
+                        style="height: 80px; width: auto;">
+                </div>
+                <h4>About Us</h4>
+                <p>QDS is a leading systems integrator delivering innovative IT solutions across the region for over 40
+                    years.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://www.qdsnet.com/contact" target="_blank">Contact us</a></li>
+                    <li><a href="https://www.qdsnet.com/privacy-policy" target="_blank">Privacy policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact Us</h4>
+                <p>Available between 8AM to 6PM. Ready to answer your questions.</p>
+                <div class="footer-contact-item">
+                    <i class="fas fa-phone-alt"></i> +974 4443 9900
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-envelope"></i> marketing@qdsnet.com
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            Copyright © 2025. by QDS.
+        </div>
+    </footer>
+    {% endif %}
+
+    <!-- Login Modal (Available globally for clean header) -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleLogin()">&times;</span>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3>Admin Login</h3>
+                {% with messages = get_flashed_messages(category_filter=["login_error"]) %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="login-error-message"
+                    style="background-color: #fee2e2; color: #dc2626; padding: 10px; border-radius: 4px; font-size: 0.9rem; margin-top: 10px; border: 1px solid #fecaca;">
+                    <i class="fas fa-exclamation-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+            <form action="{{ url_for('main.admin_login') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleLogin() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Auto-open modal if login errors exist (Client-side check)
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check for error messages inside the modal
+            if (document.querySelector('#loginModal .login-error-message')) {
+                toggleLogin();
+            }
+        });
+    </script>
+</body>
+
+</html>

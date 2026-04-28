@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Event - EVMS{% endblock %}
+{% set is_admin_page = true %}
+
+{% block admin_content %}
+<div class="content-card">
+    <h1>Edit Event</h1>
+    <p style="color: #666; margin-bottom: 20px;">You can only update the bottom banner/partners footer. All other fields
+        are locked.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Event Title</label>
+            <input type="text" value="{{ event.title }}" disabled
+                style="background-color: #f5f5f5; color: #888; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label>Date & Time</label>
+            <input type="text" value="{{ event.date_time.strftime('%Y-%m-%d %H:%M') }}" disabled
+                style="background-color: #f5f5f5; color: #888; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label>Location (Google Maps URL)</label>
+            <input type="text" value="{{ event.location_url }}" disabled
+                style="background-color: #f5f5f5; color: #888; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label>Venue</label>
+            <input type="text" value="{{ event.location_text }}" disabled
+                style="background-color: #f5f5f5; color: #888; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea rows="5" disabled
+                style="background-color: #f5f5f5; color: #888; cursor: not-allowed;">{{ event.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Current Bottom Banner</label>
+            <div
+                style="margin: 10px 0; padding: 10px; border: 1px dashed #ddd; border-radius: 4px; background: #fafafa;">
+                {% if event.bottom_banner_filename %}
+                <img src="{{ url_for('main.serve_upload', filename=event.bottom_banner_filename) }}"
+                    style="max-width: 100%; height: auto; border-radius: 4px;">
+                {% else %}
+                <p style="color: #999; font-style: italic;">No custom footer currently set (using default).</p>
+                <img src="{{ url_for('static', filename='uploads/partners_bg.png') }}"
+                    style="max-width: 100%; height: auto; opacity: 0.5;">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label style="color: #000; font-weight: 600;">Update Bottom Banner / Footer Image</label>
+            <p style="font-size: 0.8rem; color: #666; margin-top: -5px;">Upload a new image to replace the current one.
+            </p>
+            <input type="file" name="bottom_banner" accept="image/*">
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn">Update Footer Banner</button>
+            <a href="{{ url_for('main.admin_dashboard') }}" style="margin-left: 20px;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

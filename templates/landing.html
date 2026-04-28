@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+Welcome - QDS Events
+{% set hide_footer = true %}
+{% endblock %}
+
+{% block content %}
+<div class="landing-wrapper">
+    <div class="hero-slider">
+        <div class="slide active" data-bg="{{ url_for('static', filename='img/a.jfif') }}"></div>
+        <div class="slide" data-bg="{{ url_for('static', filename='img/b.jfif') }}"></div>
+        <div class="slide" data-bg="{{ url_for('static', filename='img/c.jfif') }}"></div>
+        <div class="slide" data-bg="{{ url_for('static', filename='img/d.jfif') }}"></div>
+        <div class="slide" data-bg="{{ url_for('static', filename='img/e.jfif') }}"></div>
+        <div class="slide" data-bg="{{ url_for('static', filename='img/f.jfif') }}"></div>
+    </div>
+
+    <!-- Kristin Banta Style Header -->
+    <div class="landing-header">
+        <div class="header-top">
+            <!-- Left: Social Icons -->
+            <div class="header-left social-icons">
+                <a href="http://www.facebook.com/QDSarabia" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="http://www.x.com/QDS_arabia" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="http://www.linkedin.com/company/qdsarabia" target="_blank"><i
+                        class="fab fa-linkedin-in"></i></a>
+                <a href="http://www.youtube.com/@qdsteam" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://qdsnet.com" target="_blank"><i class="fas fa-globe"></i></a>
+            </div>
+
+            <!-- Center: Logo -->
+            <div class="header-center landing-logo">
+                <img src="{{ url_for('static', filename='uploads/QDS W.png') }}" alt="QDS Events"
+                    style="height: 100px; width: auto;">
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="header-right header-actions">
+                <button class="share-btn">SHARE <i class="fas fa-share-alt"></i></button>
+                <div class="login-trigger" onclick="toggleLogin()">ADMIN LOGIN</div>
+            </div>
+        </div>
+
+        <!-- Thin Line Separator -->
+        <div class="header-separator"></div>
+
+        <!-- Navigation Links -->
+        <nav class="landing-nav">
+            <a href="#" onclick="toggleLogin()">HOME</a>
+            <!-- "Home should bring back to login page" -> trigger modal or reload. Modal is smoother. -->
+            <a href="https://www.qdsnet.com/category/events" target="_blank">PAST EVENTS</a>
+            <a href="https://www.qdsnet.com/category/news" target="_blank">NEWS</a>
+            <a href="https://www.qdsnet.com/services" target="_blank">SERVICES</a>
+            <a href="https://www.qdsnet.com/about" target="_blank">ABOUT US</a>
+            <a href="https://www.qdsnet.com/contact" target="_blank">CONTACT US</a>
+        </nav>
+    </div>
+
+
+
+</div>
+
+<script>
+    // Apply background images from data attributes to avoid inline style linter errors
+    document.querySelectorAll('.slide').forEach(function (slide) {
+        var bgUrl = slide.getAttribute('data-bg');
+        if (bgUrl) {
+            slide.style.backgroundImage = 'url(' + bgUrl + ')';
+        }
+    });
+
+    // Simple Slider Script
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Auto-advance every 5 seconds
+    setInterval(nextSlide, 5000);
+</script>
+{% endblock %}

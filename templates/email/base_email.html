@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #E9EFF6;
+            /* Light Blue Background from user image inspiration */
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .page-wrapper {
+            background-color: #E9EFF6;
+            padding: 40px 0;
+            width: 100%;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 0px;
+            /* The image shows straight edges, or maybe slight radius. */
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            text-align: center;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .header-logo {
+            max-height: 60px;
+        }
+
+        .header-title {
+            color: #234C73;
+            font-size: 24px;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .content {
+            padding: 40px;
+            color: #000000;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .greeting {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .info-box {
+            background-color: #f9f9f9;
+            border-left: 5px solid #234C73;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #234C73;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #234C73;
+        }
+
+        /* Mobile Responsive */
+        @media only screen and (max-width: 620px) {
+            .content {
+                padding: 20px !important;
+            }
+
+            .header {
+                padding: 20px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="email-container">
+            <!-- Top Banner Image -->
+            {% if top_banner_url %}
+            <div class="banner">
+                <img src="{{ top_banner_url }}" alt="{{ event_title }} Banner"
+                    style="width: 100%; display: block; height: auto;">
+            </div>
+            {% endif %}
+
+            <!-- Header -->
+            <div class="header">
+                <!-- If we have a logo, we should use it. For now, text title or event title -->
+                <h1 class="header-title">{{ event_title }}</h1>
+            </div>
+
+            <!-- Main Content -->
+            <div class="content">
+                <p class="greeting">Dear {{ full_name }},</p>
+
+                <!-- Specific Message Content -->
+                {% block content %}{% endblock %}
+
+                <!-- Dynamic Event Details (Only shown if data exists) -->
+                {% if show_event_details %}
+                <div class="info-box">
+                    <h3 style="margin-top: 0; color: #234C73;">Event Details</h3>
+                    {% if event_date %}<p><strong>Date:</strong> {{ event_date }}</p>{% endif %}
+                    {% if location_text %}<p><strong>Venue:</strong> {{ location_text }}</p>{% endif %}
+                    {% if location_url %}
+                    <p style="margin-top: 10px;">
+                        <strong>Map:</strong> <a href="{{ location_url }}">View on Google Maps</a>
+                    </p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p><strong>QDS Team</strong></p>
+                <p>marketing@qdsnet.com | +974 4443 9900</p>
+                <p style="margin-top: 10px; font-size: 10px;">&copy; {{ current_year }} QDS. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
