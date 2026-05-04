@@ -287,10 +287,10 @@ def export_visitors(event_id):
         for v in visitors:
             w.writerow((
                 v.full_name,
-                v.email,
-                v.phone,
                 v.organization,
                 v.designation,
+                v.email,
+                v.phone,
                 v.status,
                 "Yes" if v.arrived else "No",
                 v.invited_by,
