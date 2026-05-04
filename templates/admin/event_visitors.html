@@ -5,12 +5,6 @@
 
 {% block admin_content %}
 
-<script>
-if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
-</script>
-
 <div class="content-card">
     <div class="top-bar" style="margin-bottom: 20px;">
         <div>
@@ -132,38 +126,39 @@ if ('scrollRestoration' in history) {
 <script>
 (function () {
 
-    // 1. kill browser scroll restore
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
+    const highlight = new URLSearchParams(window.location.search).get("highlight");
+    if (!highlight) return;
+
+    function scrollToRow() {
+        const row = document.getElementById("visitor-" + highlight);
+        const container = document.querySelector(".admin-content");
+
+        if (!row || !container) return false;
+
+        const offsetTop = row.offsetTop;
+
+        container.scrollTo({
+            top: offsetTop - 100,
+            behavior: "smooth"
+        });
+
+        return true;
     }
 
-    // 2. force top immediately
-    
     window.addEventListener("load", function () {
-
-        const params = new URLSearchParams(window.location.search);
-        const highlight = params.get("highlight");
-
-        if (!highlight) return;
-
-        let attempts = 0;
+        let tries = 0;
 
         const interval = setInterval(() => {
-            const row = document.getElementById("visitor-" + highlight);
 
-            if (row) {
-                row.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+            const done = scrollToRow();
 
+            tries++;
+
+            if (done || tries > 30) {
                 clearInterval(interval);
             }
 
-            attempts++;
-            if (attempts > 10) clearInterval(interval);
-
-        }, 100); // wait for ALL scripts/layout to finish
+        }, 100);
 
     });
 
