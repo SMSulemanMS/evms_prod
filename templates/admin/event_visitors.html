@@ -10,12 +10,21 @@
             <h2>Visitors: {{ event.title }}</h2>
             <p style="color: #666;">Manage approvals and view attendance.</p>
         </div>
+        <div style="margin-top: 15px;">
+            <input 
+                type="text" 
+                id="visitorSearch" 
+                placeholder="Search visitor by name..."
+                style="padding: 10px 12px; width: 300px; border: 1px solid #ddd; border-radius: 6px;"
+                onkeyup="filterVisitors()"
+    >
+        </div>
         <a href="{{ url_for('main.admin_dashboard') }}" class="btn"
             style="background: transparent; color: #333; border: 1px solid #ddd;">
             &larr; Back to Dashboard
         </a>
     </div>
-
+    
     <div class="table-responsive">
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <thead>
@@ -120,5 +129,31 @@
             row.style.display = "none";
         }
     }
+</script>
+
+<script>
+function filterVisitors() {
+    const input = document.getElementById("visitorSearch");
+    const filter = input.value.toLowerCase();
+
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+        // skip detail rows
+        if (row.id.startsWith("details-")) return;
+
+        const nameCell = row.querySelector('td[data-label="Name"]');
+
+        if (!nameCell) return;
+
+        const name = nameCell.textContent.toLowerCase();
+
+        if (name.startsWith(filter)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
 </script>
 {% endblock %}
