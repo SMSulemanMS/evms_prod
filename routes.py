@@ -322,7 +322,7 @@ def approve_visitor(visitor_id):
     
     if visitor.status != 'Pending':
         flash(f'Action Blocked: Visitor {visitor.full_name} has already been processed (Status: {visitor.status}).', 'warning')
-        return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+        return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
 
     if visitor.status != 'Approved':
         visitor.status = 'Approved'
@@ -369,7 +369,7 @@ def approve_visitor(visitor_id):
         
         flash(f'Visitor {visitor.full_name} approved and email sent.')
     
-    return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+    return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
 
 @main_bp.route('/api/scan/<token>')
 def scan_qr(token):
@@ -419,7 +419,7 @@ def reject_visitor_capacity(visitor_id):
     
     if visitor.status != 'Pending':
         flash(f'Action Blocked: Visitor {visitor.full_name} has already been processed (Status: {visitor.status}).', 'warning')
-        return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+        return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
     
     if visitor.status != 'Rejected':
         visitor.status = 'Rejected' # or 'Rejected (Capacity)' but simplistic 'Rejected' is fine
@@ -436,7 +436,7 @@ def reject_visitor_capacity(visitor_id):
         
         flash(f'Visitor {visitor.full_name} rejected (Full Capacity).')
     
-    return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+    return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
 
 @main_bp.route('/admin/visitor/<int:visitor_id>/reject/data')
 @login_required
@@ -447,7 +447,7 @@ def reject_visitor_data(visitor_id):
     
     if visitor.status != 'Pending':
         flash(f'Action Blocked: Visitor {visitor_name} has already been processed (Status: {visitor.status}).', 'warning')
-        return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+        return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
     
     # 1. Prepare Banner URL
     top_banner_url = None
@@ -473,7 +473,7 @@ def reject_visitor_data(visitor_id):
     
     flash(f'Visitor {visitor_name} rejected (Wrong Submission) and record deleted. Email sent.')
     
-    return redirect(url_for('main.event_visitors', event_id=visitor.event_id))
+    return redirect(url_for('main.event_visitors', event_id=visitor.event_id, no_scroll=1))
 
 @main_bp.route('/admin/visitor/<int:visitor_id>/delete', methods=['POST'])
 @login_required
@@ -486,7 +486,7 @@ def delete_visitor(visitor_id):
     db.session.commit()
     
     flash(f'Submission for {visitor_name} deleted. They can now register again.')
-    return redirect(url_for('main.event_visitors', event_id=event_id))
+    return redirect(url_for('main.event_visitors', event_id=event_id, no_scroll=1))
 
 
 # --- PUBLIC ROUTES ---
