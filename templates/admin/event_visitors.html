@@ -197,6 +197,31 @@ function filterVisitors() {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
+    const orgSelect = document.getElementById("orgFilter");
+    if (!orgSelect) return;
+
+    const orgSet = new Set();
+
+    document.querySelectorAll('td[data-label="Organization"]').forEach(td => {
+        const org = td.textContent.trim();
+        if (org && org !== "N/A") orgSet.add(org);
+    });
+
+    // sort alphabetically
+    Array.from(orgSet)
+        .sort()
+        .forEach(org => {
+            const option = document.createElement("option");
+            option.value = org.toLowerCase();
+            option.textContent = org;
+            orgSelect.appendChild(option);
+        });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
     const statusSelect = document.getElementById("statusFilter");
     if (!statusSelect) return;
 
@@ -218,5 +243,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-
 {% endblock %}
