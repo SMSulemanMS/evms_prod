@@ -124,35 +124,14 @@
 </script>
 
 <script>
-(function () {
-
-    const highlight = new URLSearchParams(window.location.search).get("highlight");
-    if (!highlight) return;
-
-    window.addEventListener("load", function () {
-
-        const row = document.getElementById("visitor-" + highlight);
-
-        if (!row) return;
-
-        // FORCE LAYOUT STABILIZATION
-        setTimeout(() => {
-
-            // OPTION 1: direct element scroll (most reliable in locked layouts)
-            row.scrollIntoView({
-                behavior: "auto",
-                block: "center",
-                inline: "nearest"
-            });
-
-            // OPTION 2: fallback hard scroll (backup)
-            const rect = row.getBoundingClientRect();
-            window.scrollTo(0, rect.top + window.pageYOffset - 120);
-
-        }, 300);
-
-    });
-
-})();
+window.addEventListener("load", function () {
+    if (window.location.hash) {
+        const el = document.querySelector(window.location.hash);
+        if (el) {
+            el.scrollIntoView({ behavior: "auto", block: "center" });
+        }
+    }
+});
 </script>
+
 {% endblock %}
