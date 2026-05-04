@@ -125,12 +125,20 @@
 
 <script>
 window.addEventListener("load", function () {
-    if (window.location.hash) {
-        const el = document.querySelector(window.location.hash);
-        if (el) {
-            el.scrollIntoView({ behavior: "auto", block: "center" });
-        }
-    }
+
+    const id = new URLSearchParams(location.search).get("highlight");
+    if (!id) return;
+
+    const el = document.getElementById("visitor-" + id);
+    if (!el) return;
+
+    setTimeout(() => {
+        el.scrollIntoView({
+            behavior: "auto",
+            block: "center"
+        });
+    }, 200);
+
 });
 </script>
 
