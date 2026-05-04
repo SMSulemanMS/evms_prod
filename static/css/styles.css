@@ -875,3 +875,14 @@ textarea:focus {
     display: inline-flex;
     margin: 0;
 }
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+}
