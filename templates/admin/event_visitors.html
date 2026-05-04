@@ -4,6 +4,13 @@
 {% set is_admin_page = true %}
 
 {% block admin_content %}
+
+<script>
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+</script>
+
 <div class="content-card">
     <div class="top-bar" style="margin-bottom: 20px;">
         <div>
@@ -127,14 +134,14 @@
         behavior: "smooth"
     });
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const highlight = params.get("highlight");
 
     if (highlight) {
-        // wait for layout + table rendering
-        setTimeout(() => {
+        const tryScroll = () => {
             const row = document.getElementById("visitor-" + highlight);
 
             if (row) {
@@ -142,9 +149,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     behavior: "smooth",
                     block: "center"
                 });
+                return true;
             }
-        }, 100); // key fix
+            return false;
+        };
+
+        // try immediately + retry for layout stability
+        setTimeout(tryScroll, 50);
+        setTimeout(tryScroll, 200);
     }
 });
 </script>
+
 {% endblock %}
