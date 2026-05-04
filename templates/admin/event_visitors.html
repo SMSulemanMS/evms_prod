@@ -129,36 +129,27 @@
     const highlight = new URLSearchParams(window.location.search).get("highlight");
     if (!highlight) return;
 
-    function scrollToRow() {
-        const row = document.getElementById("visitor-" + highlight);
-        if (!row) return false;
-
-        // FORCE correct scroll target
-        const top = row.getBoundingClientRect().top + window.pageYOffset;
-
-        window.scrollTo({
-            top: top - 120,
-            behavior: "auto"   // IMPORTANT: avoid smooth override issues
-        });
-
-        return true;
-    }
-
     window.addEventListener("load", function () {
 
-        let tries = 0;
+        const row = document.getElementById("visitor-" + highlight);
 
-        const interval = setInterval(() => {
+        if (!row) return;
 
-            const done = scrollToRow();
+        // FORCE LAYOUT STABILIZATION
+        setTimeout(() => {
 
-            tries++;
+            // OPTION 1: direct element scroll (most reliable in locked layouts)
+            row.scrollIntoView({
+                behavior: "auto",
+                block: "center",
+                inline: "nearest"
+            });
 
-            if (done || tries > 20) {
-                clearInterval(interval);
-            }
+            // OPTION 2: fallback hard scroll (backup)
+            const rect = row.getBoundingClientRect();
+            window.scrollTo(0, rect.top + window.pageYOffset - 120);
 
-        }, 150);
+        }, 300);
 
     });
 
