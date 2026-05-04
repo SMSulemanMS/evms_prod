@@ -885,28 +885,30 @@ textarea:focus {
 }
 
 /* IMPORTANT: stop breaking layout */
-table {
-    width: 100% !important;
-    min-width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* prevents columns from expanding outside */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
-/* prevent long content from stretching table */
+/* Let table grow naturally but stay scrollable */
+.table-scroll table {
+    width: 100%;
+    min-width: 1100px; /* 🔥 key: ensures enough space for all columns */
+    border-collapse: collapse;
+}
+
+/* Prevent ugly wrapping */
 th, td {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    white-space: nowrap;
     vertical-align: middle;
 }
 
-/* ACTION BUTTON CELL FIX */
-td[data-label="Actions"] {
-    white-space: nowrap;
-}
-
-/* STATUS CELL FIX */
-td[data-label="Status"] {
-    white-space: nowrap;
+/* But allow long text (like email) to wrap if needed */
+td[data-label="Email"],
+td[data-label="Organization"] {
+    white-space: normal;
+    word-break: break-word;
 }
 
 .content-card {
