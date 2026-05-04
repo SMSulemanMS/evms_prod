@@ -881,42 +881,29 @@ textarea:focus {
 .table-scroll {
     width: 100%;
     overflow-x: auto;
-    overflow-y: hidden;
 }
 
-/* IMPORTANT: stop breaking layout */
-.table-scroll {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
-/* Let table grow naturally but stay scrollable */
-.table-scroll table {
-    width: 100%;
-    min-width: 1100px; /* 🔥 key: ensures enough space for all columns */
-    border-collapse: collapse;
-}
-
-/* Prevent ugly wrapping */
-th, td {
+/* Default: no wrapping */
+.visitor-table th,
+.visitor-table td {
     white-space: nowrap;
     vertical-align: middle;
 }
 
-/* But allow long text (like email) to wrap if needed */
-td[data-label="Email"],
-td[data-label="Organization"] {
+/* Allow wrapping ONLY where needed */
+.visitor-table td[data-label="Email"],
+.visitor-table td[data-label="Organization"] {
     white-space: normal;
     word-break: break-word;
 }
 
-.content-card {
-    background: #fff;
-    padding: 30px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-
-    overflow: hidden; /* 🔥 prevents children escaping white box */
+/* Actions should NEVER wrap */
+.visitor-table td[data-label="Actions"] {
+    white-space: nowrap;
 }
+
+/* Status should stay clean */
+.visitor-table td[data-label="Status"] {
+    white-space: nowrap;
+}
+
