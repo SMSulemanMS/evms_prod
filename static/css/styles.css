@@ -142,16 +142,11 @@ textarea:focus {
     }
 }
 
-html, body {
-    height: auto;
-    overflow-y: auto;
-}
-
 /* --- LANDING PAGE (Kristin Banta Style) --- */
 .landing-wrapper {
     position: relative;
-    height: auto;
-    overflow: visible;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .hero-slider {
