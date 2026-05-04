@@ -32,6 +32,7 @@
                     <th style="padding: 15px; font-weight: 500; color: #666;">Name</th>
                     <th style="padding: 15px; font-weight: 500; color: #666;">Email</th>
                     <th style="padding: 15px; font-weight: 500; color: #666;">Phone</th>
+                    <th style="padding: 15px; font-weight: 500; color: #666;">Job Title</th>
                     
                     <th style="padding: 15px; font-weight: 500; color: #666;">
                         Organization
@@ -70,6 +71,7 @@
                     <td style="padding: 15px;" data-label="Name"><strong>{{ visitor.full_name }}</strong></td>
                     <td style="padding: 15px;" data-label="Email">{{ visitor.email }}</td>
                     <td style="padding: 15px;" data-label="Phone">{{ visitor.phone }}</td>
+                    <td style="padding: 15px;" data-label="Job Title">{{ visitor.designation or 'N/A' }}</td>
                     <td style="padding: 15px;" data-label="Organization">{{ visitor.organization }}</td>
                     <td style="padding: 15px;" data-label="Source">
                         {% if visitor.status == 'Walk-in' %}
