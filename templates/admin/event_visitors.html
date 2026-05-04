@@ -4,7 +4,6 @@
 {% set is_admin_page = true %}
 
 {% block admin_content %}
-
 <div class="content-card">
     <div class="top-bar" style="margin-bottom: 20px;">
         <div>
@@ -32,7 +31,7 @@
             </thead>
             <tbody>
                 {% for visitor in visitors %}
-                <tr id="visitor-{{ visitor.id }}" style="border-bottom: 1px solid #f5f5f5;">
+                <tr style="border-bottom: 1px solid #f5f5f5;">
                     <td style="padding: 15px;" data-label="Name"><strong>{{ visitor.full_name }}</strong></td>
                     <td style="padding: 15px;" data-label="Email">{{ visitor.email }}</td>
                     <td style="padding: 15px;" data-label="Phone">{{ visitor.phone }}</td>
@@ -122,24 +121,4 @@
         }
     }
 </script>
-
-<script>
-window.addEventListener("load", function () {
-
-    const id = new URLSearchParams(location.search).get("highlight");
-    if (!id) return;
-
-    const el = document.getElementById("visitor-" + id);
-    if (!el) return;
-
-    setTimeout(() => {
-        el.scrollIntoView({
-            behavior: "auto",
-            block: "center"
-        });
-    }, 200);
-
-});
-</script>
-
 {% endblock %}
