@@ -28,6 +28,9 @@ class Event(db.Model):
     registration_active = db.Column(db.Boolean, default=True) # Open/Close Registration
     visitors = db.relationship('Visitor', backref='event', lazy=True)
 
+    partners_heading = db.Column(db.String(255), nullable=True)
+    partners_body = db.Column(db.Text, nullable=True)
+
 class Visitor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
