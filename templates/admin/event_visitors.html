@@ -130,12 +130,26 @@ if ('scrollRestoration' in history) {
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const highlight = params.get("highlight");
+(function () {
 
-    if (highlight) {
-        const tryScroll = () => {
+    // 1. kill browser scroll restore
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // 2. force top immediately
+    window.scrollTo(0, 0);
+
+    window.addEventListener("load", function () {
+
+        const params = new URLSearchParams(window.location.search);
+        const highlight = params.get("highlight");
+
+        if (!highlight) return;
+
+        let attempts = 0;
+
+        const interval = setInterval(() => {
             const row = document.getElementById("visitor-" + highlight);
 
             if (row) {
@@ -143,16 +157,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     behavior: "smooth",
                     block: "center"
                 });
-                return true;
+
+                clearInterval(interval);
             }
-            return false;
-        };
 
-        // try immediately + retry for layout stability
-        setTimeout(tryScroll, 50);
-        setTimeout(tryScroll, 200);
-    }
-});
+            attempts++;
+            if (attempts > 10) clearInterval(interval);
+
+        }, 100); // wait for ALL scripts/layout to finish
+
+    });
+
+})();
 </script>
-
 {% endblock %}
