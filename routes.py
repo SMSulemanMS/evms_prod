@@ -277,7 +277,8 @@ def export_visitors(event_id):
         w = csv.writer(data)
 
         # Header
-        w.writerow(('Full Name', 'Email', 'Phone', 'Organization', 'Designation', 'Status', 'Arrived', 'Invited By', 'Registration Date'))
+        #w.writerow(('Full Name', 'Email', 'Phone', 'Organization', 'Designation', 'Status', 'Arrived', 'Invited By', 'Registration Date'))
+        w.writerow(('Full Name', 'Organization', 'Designation', 'Email', 'Phone', 'Status', 'Arrived', 'Invited By', 'Registration Date'))
         yield data.getvalue()
         data.seek(0)
         data.truncate(0)
